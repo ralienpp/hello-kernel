@@ -5,7 +5,7 @@ This is a basic kernel module that does nothing at the moment. The planned behav
 
 - create a device file ``/dev/oracle`` where any process can write any string that ends with a ``?``
 - when reading from the file, the answer will be ``42``
-- when sending a specific ``ioctl`` to the module, it will increment the answer to 43, then 42, and so on...
+- when sending a specific ``ioctl`` to the module, it will increment the answer to 43, then 44, and so on...
 
 
 Instructions
