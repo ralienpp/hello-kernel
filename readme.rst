@@ -1,7 +1,7 @@
 Overview
 ========
 
-This is a basic kernel module that implements the following basics:
+This is a basic kernel module that implements the following features:
 
 - entry point for loading and unloading the kernel module
 - debug statements that can be observed with ``dmesg``
@@ -22,7 +22,9 @@ Prerequisites
 This only needs to be done once, to prepare the compilation environment.
 
 - ``sudo apt-get install build-essentials``
-- ``sudo apt-get install linux-headers-$(uname -r)`` or ``sudo apt-get install raspberrypi-kernel-headers`` if you have a RaspberryPi (untested)
+- ``sudo apt-get install linux-headers-$(uname -r)``
+
+It is expected that you already have Python, it will be needed for the user-mode program to test ``ioctl`` handling.
 
 Compilation
 -----------
@@ -105,3 +107,4 @@ Questions
 #. ``cat`` never stops, should I add an ``EOF`` at the end? (does stop when run as root, strange)
 #. what format specifier to use for ``size_t``? ``%z`` does not work.
 #. ``#define ENOTTY      25  /* Not a typewriter */`` why can't my character device handle this?
+#. what is a safe way to avoid ``MAJOR`` collisions?
