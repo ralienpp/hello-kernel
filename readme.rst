@@ -76,9 +76,12 @@ Before you can interact with this device, run ``sudo mknod -m 666 /dev/oracle c 
 User-mode tool
 ==============
 
-There is no separate tool that communicates with this kernel module yet. However, to demonstrate communication between kernel-space and user-space, you can run ``cat /dev/oracle`` and the value of ``magic`` will be shown on the screen as a string.
+To demonstrate communication between kernel-space and user-space, you can run ``cat /dev/oracle`` and the value of ``magic`` will be shown on the screen as a string.
 
 This happens by copying this value from a buffer in the kernel's address space, into a buffer in user-space, using ``copy_to_user``.
+
+
+Alternatively, run ``python testusermode.py``, which will send an ``ioctl`` to ``/dev/oracle`` (the driver doesn't care what command is sent, they're all handled equally). You can observe the effect by reading from ``/dev/oracle``, the read value should be incremeted after each ioctl call.
 
 
 
