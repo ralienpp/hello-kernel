@@ -2,6 +2,7 @@
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 #include <linux/fs.h>
+#include <linux/uaccess.h>
 
 #define MAJOR 100
 #define DEVICE_NAME "Oracle"
@@ -15,24 +16,27 @@ module_param(magic, int, 0644); //name, type, permissions
 // otherwise you can tinker with it via /sys/
 
 
-// undefined functions are set to NULL
-struct file_operations ocacle_operations = {
-	.owner = THIS_MODULE,
-	.read  = oracle_read,
-};
 
 #define BUFF_SIZE 100
 static char response_buffer[BUFF_SIZE];
 
 ssize_t oracle_read(struct file *pfile, char __user *buffer, size_t length, loff_t *offset)
 {
-	printk(KERN_ALERT "Attempting to read, length %d in %s\n", length, __FUNCTION__);
+	printk(KERN_ALERT "Attempting to read in %s\n", __FUNCTION__);
 	snprintf(response_buffer, BUFF_SIZE, "%d", magic);
 	printk(KERN_ALERT "prepared answer\n");
-	copy_to_user(buffer, response_buffer, sizeof(response_buffer))
-	printk(KERN_ALERT "copied answer to user-space buffer\n");
+	int bytes_not_copied = copy_to_user(buffer, response_buffer, sizeof(response_buffer));
+	printk(KERN_ALERT "copied answer to user-space buffer, not copied %d\n", bytes_not_copied);
 	return sizeof(response_buffer);
 }
+
+// undefined functions are set to NULL
+struct file_operations ocacle_operations = {
+	.owner = THIS_MODULE,
+	.read  = oracle_read,
+};
+
+
 
 static int my_init(void)
 {
