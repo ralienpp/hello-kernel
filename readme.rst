@@ -102,3 +102,6 @@ Questions
 #. why ``static``? Other tutorials don't have that.
 #. what is the point of having major and minor versions?
 #. can ``mknod`` be invoked automatically?
+#. ``cat`` never stops, should I add an ``EOF`` at the end?
+#. what format specifier to use for ``size_t``? ``%z`` does not work.
+#. who allocates ``ioctl`` numbers?

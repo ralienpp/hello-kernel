@@ -3,6 +3,7 @@
 #include <linux/moduleparam.h>
 #include <linux/fs.h>
 #include <linux/uaccess.h>
+#include <linux/ioctl.h>
 
 #define MAJOR 100
 #define DEVICE_NAME "Oracle"
@@ -55,6 +56,17 @@ static void my_exit(void)
 	return;
 }
 
+
+// react to any ioctl by incrementing magic, regardless of circumstances
+int device_ioctl(struct inode *inode, struct file *file,
+				 unsigned int ioctl_num, //ioctl number
+				 unsigned long ioctl_param) //ioctl parameter
+{
+	printk(KERN_ALERT "Got ioctl %d, param %lu n", ioctl_num, ioctl_param);
+	magic++;
+
+	return 0;
+}
 
 // maybe for later
 // int exported_function(void)
