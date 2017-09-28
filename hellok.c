@@ -8,6 +8,8 @@
 #define MAJOR 100
 #define DEVICE_NAME "Oracle"
 
+#define IOCTL_GENERIC _IO(MAJOR, 0)
+
 // example of using parameters that are passed to the module when
 // it is loaded (with a default value)
 // see http://www.tldp.org/LDP/lkmpg/2.6/html/x323.html
@@ -31,11 +33,25 @@ ssize_t oracle_read(struct file *pfile, char __user *buffer, size_t length, loff
 	return sizeof(response_buffer);
 }
 
+
+// react to any ioctl by incrementing magic, regardless of circumstances
+int device_ioctl(struct inode *inode, struct file *file,
+				 unsigned int ioctl_num, //ioctl number
+				 unsigned long ioctl_param) //ioctl parameter
+{
+	printk(KERN_ALERT "Got ioctl %d, param %lu n", ioctl_num, ioctl_param);
+	magic++;
+
+	return 0;
+}
+
+
+
 // undefined functions are set to NULL
 struct file_operations ocacle_operations = {
 	.owner = THIS_MODULE,
 	.read  = oracle_read,
-	.ioctl = device_ioctl,
+	.unlocked_ioctl = device_ioctl,
 };
 
 
@@ -58,16 +74,6 @@ static void my_exit(void)
 }
 
 
-// react to any ioctl by incrementing magic, regardless of circumstances
-int device_ioctl(struct inode *inode, struct file *file,
-				 unsigned int ioctl_num, //ioctl number
-				 unsigned long ioctl_param) //ioctl parameter
-{
-	printk(KERN_ALERT "Got ioctl %d, param %lu n", ioctl_num, ioctl_param);
-	magic++;
-
-	return 0;
-}
 
 // maybe for later
 // int exported_function(void)
