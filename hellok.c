@@ -6,7 +6,10 @@
 // it is loaded (with a default value)
 // see http://www.tldp.org/LDP/lkmpg/2.6/html/x323.html
 int magic = 42;
-module_param(magic, int, 0); //name, type, permissions
+module_param(magic, int, 0644); //name, type, permissions
+// if the permissions are set to 0, the parameter cannot be changed,
+// otherwise you can tinker with it via /sys/modules
+
  
 static int my_init(void)
 {
