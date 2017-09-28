@@ -3,7 +3,7 @@
  
 static int my_init(void)
 {
-	printk("Loaded hellok\n");
+	printk(KERN_ALERT "Loaded hellok in %s\n", __FUNCTION__);
 	return 0;
 }
  
