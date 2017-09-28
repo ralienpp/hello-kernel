@@ -1,11 +1,12 @@
-from fcntl import fcntl
+import fcntl
+import sys
 
 # the module doesn't care what command you send it, but since an
 # integer is expected, let's give it one
-OPERATION = 12
+operation = int(sys.argv[-1])
 
 
 oracle = open('/dev/oracle', 'rb')
-fcntl(oracle, OPERATION)
+fcntl.ioctl(oracle, operation)
 
-print 'command sent'
+print 'ioctl %i sent ' % operation
