@@ -1,17 +1,24 @@
 Overview
 ========
 
-This is a basic kernel module that does nothing at the moment. The planned behaviour:
+This is a basic kernel module that implements the following basics:
 
-- create a device file ``/dev/oracle`` where any process can write any string that ends with a ``?``
-- when reading from the file, the answer will be ``42``
-- when sending a specific ``ioctl`` to the module, it will increment the answer to 43, then 44, and so on...
+- entry point for loading and unloading the kernel module
+- debug statements that can be observed with ``dmesg``
+- optionally transmitting a parameter, ``magic``, when the module is loaded (otherwise a default value is used)
+- creation of a character device, ``/dev/oracle`` (mknod must be invoked manually for now)
+- implements the ``read`` API, which takes the current value of ``magic`` and copies it from the kernel to the user-space buffer
+
+
+Planned behaviour:
+
+- react to a specific ``ioctl`` sent to the module, which will then increment ``magic``
 
 
 Instructions
 ============
 
-This was tested on Linux Mint 18.2, but should work on any Debian-based distro, as well as any other distro, if you adjust the dependencies accordingly.
+This was tested on Debian 7 x64.
 
 Prerequisites
 -------------
@@ -19,7 +26,7 @@ Prerequisites
 This only needs to be done once, to prepare the compilation environment.
 
 - ``sudo apt-get install build-essentials``
-- ``sudo apt-get install raspberrypi-kernel-headers`` (raspi-specific) or ``sudo apt-get install linux-headers-$(uname -r)`` (untested)
+- ``sudo apt-get install linux-headers-$(uname -r)`` or ``sudo apt-get install raspberrypi-kernel-headers`` if you have a RaspberryPi (untested)
 
 Compilation
 -----------
@@ -61,13 +68,21 @@ Notes on parameters
 Character-device operations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Before you can interact with this device, run ``sudo mknod -m 666 /dev/oracle c 100 0`` (create a character device, allowing everyone to do everything with it, 100 is the major version as defined in the code, and 0 is the minor [taken "as is" from a guide]).
+To check if the devices was created successfully, run ``cat /proc/devices`` and expect something like this::
 
+	Character devices:
+	100 Oracle
+
+The number is the ``MAJOR`` defined in the code, and the name is the string we used to name the device.
+
+Before you can interact with this device, run ``sudo mknod -m 666 /dev/oracle c 100 0`` (create a character device, allowing everyone to do everything with it, 100 is ``MAJOR`` as defined in the code, and 0 is the minor [taken "as is" from a guide]).
 
 User-mode tool
 ==============
 
-TODO
+There is no separate tool that communicates with this kernel module yet. However, to demonstrate communication between kernel-space and user-space, you can run ``cat /dev/oracle`` and the value of ``magic`` will be shown on the screen as a string.
+
+This happens by copying this value from a buffer in the kernel's address space, into a buffer in user-space, using ``copy_to_user``.
 
 
 
@@ -86,3 +101,4 @@ Questions
 
 #. why ``static``? Other tutorials don't have that.
 #. what is the point of having major and minor versions?
+#. can ``mknod`` be invoked automatically?
