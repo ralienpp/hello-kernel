@@ -35,6 +35,7 @@ ssize_t oracle_read(struct file *pfile, char __user *buffer, size_t length, loff
 struct file_operations ocacle_operations = {
 	.owner = THIS_MODULE,
 	.read  = oracle_read,
+	.ioctl = device_ioctl,
 };
 
 

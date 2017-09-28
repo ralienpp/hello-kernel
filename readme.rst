@@ -8,11 +8,7 @@ This is a basic kernel module that implements the following basics:
 - optionally transmitting a parameter, ``magic``, when the module is loaded (otherwise a default value is used)
 - creation of a character device, ``/dev/oracle`` (mknod must be invoked manually for now)
 - implements the ``read`` API, which takes the current value of ``magic`` and copies it from the kernel to the user-space buffer
-
-
-Planned behaviour:
-
-- react to a specific ``ioctl`` sent to the module, which will then increment ``magic``
+- reacts to any ``ioctl`` sent to the module by incrementing ``magic``
 
 
 Instructions
@@ -102,6 +98,6 @@ Questions
 #. why ``static``? Other tutorials don't have that.
 #. what is the point of having major and minor versions?
 #. can ``mknod`` be invoked automatically?
-#. ``cat`` never stops, should I add an ``EOF`` at the end?
+#. ``cat`` never stops, should I add an ``EOF`` at the end? (does stop when run as root, strange)
 #. what format specifier to use for ``size_t``? ``%z`` does not work.
-#. who allocates ``ioctl`` numbers?
+#. ``#define ENOTTY      25  /* Not a typewriter */`` why can't my character device handle this?
