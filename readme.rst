@@ -43,6 +43,13 @@ You can make sure this loads and unloads correctly as follows:
 	hellok                 12452  0
 
 #. unload it with ``sudo rmmod hellok``
+#. run ``dmesg`` to see what has just happened, the debug lines should be there::
+
+	[73964.820487] hellok: module license 'unspecified' taints kernel.
+	[73964.820492] Disabling lock debugging due to kernel taint
+	[74342.727012] Loaded hellok
+	[74469.278069] Unloaded hellok
+
 
 
 User-mode tool

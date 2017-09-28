@@ -15,3 +15,8 @@ static void my_exit(void)
  
 module_init(my_init);
 module_exit(my_exit);
+
+
+# otherwise it complains that
+# `module license 'unspecified' taints kernel`
+MODULE_LICENSE("GPL");
