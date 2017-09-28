@@ -50,11 +50,12 @@ You can make sure this loads and unloads correctly as follows:
 	[74342.727012] Loaded hellok
 	[74469.278069] Unloaded hellok
 
-Notes
-~~~~~
+Notes on parameters
+~~~~~~~~~~~~~~~~~~~
 
 - You can pass a parameter at load time, e.g. ``sudo insmod ./hellok.ko magic=12``. If not specified, a default value will be used.
-
+- The value can be examined after the module is loaded: ``cat /sys/module/hellok/parameters/magic``
+- You can write to it (if permissions allow so), e.g. (as root) ``echo 45 > /sys/module/hellok/parameters/magic``
 
 User-mode tool
 ==============
