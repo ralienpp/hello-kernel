@@ -3,11 +3,13 @@
  
 static int my_init(void)
 {
-	return  0;
+	printk("Loaded hellok\n");
+	return 0;
 }
  
 static void my_exit(void)
 {
+	printk("Unloaded hellok\n");
 	return;
 }
  
