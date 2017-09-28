@@ -57,6 +57,13 @@ Notes on parameters
 - The value can be examined after the module is loaded: ``cat /sys/module/hellok/parameters/magic``
 - You can write to it (if permissions allow so), e.g. (as root) ``echo 45 > /sys/module/hellok/parameters/magic``
 
+
+Character-device operations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Before you can interact with this device, run ``sudo mknod -m 666 /dev/oracle c 100 0`` (create a character device, allowing everyone to do everything with it, 100 is the major version as defined in the code, and 0 is the minor [taken "as is" from a guide]).
+
+
 User-mode tool
 ==============
 
@@ -78,3 +85,4 @@ Questions
 =========
 
 #. why ``static``? Other tutorials don't have that.
+#. what is the point of having major and minor versions?
