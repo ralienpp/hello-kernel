@@ -105,6 +105,23 @@ Questions
 #. what is the point of having major and minor versions?
 #. can ``mknod`` be invoked automatically?
 #. ``cat`` never stops, should I add an ``EOF`` at the end? (does stop when run as root, strange)
-#. what format specifier to use for ``size_t``? ``%z`` does not work.
 #. ``#define ENOTTY      25  /* Not a typewriter */`` why can't my character device handle this?
 #. what is a safe way to avoid ``MAJOR`` collisions?
+
+
+
+Note to self
+============
+
+- use ``%zu`` for ``size_t`` in debug statements
+
+
+
+
+Reasoning
+=========
+
+- ``ioctl`` is used because I was aware of this concept earlier and expected it to be easier. After reading more about it while implementing it, I found it convenient that I can send a ``void`` payload, and use the presence of the message itself as a signal, which is sufficient for the purposes of this prototype. Otherwise, the benefit of the ``ioctl`` is that it provides the possibility to send arbitrary payloads, which may be handy in the future.
+- clearly, the communication done via ``/sys/module/hellok/parameters/magic`` is another form of interaction between kernel-space and user-space, which is not an ``ioctl`` and which appears to be a much simpler/cheaper method, because I got it "for free" (no need to write a handler for it).
+- when it comes to user-space, the "cheapest" way to prove it works is to read from ``/dev/oracle`` with any existing tool, thus there's no need to write any code at all.
+- however, I also wrote a Python program in order to check how the ``ioctl`` handler works. I used this language because it was much easier to write in, and I was thinking that if there were implementation issues it would be easier to debug them using the REPL. However, due to the simplicity of the current driver, there's not much room for something not to work.
