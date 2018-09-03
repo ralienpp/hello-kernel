@@ -39,7 +39,7 @@ int device_ioctl(struct inode *inode, struct file *file,
 				 unsigned int ioctl_num, //ioctl number
 				 unsigned long ioctl_param) //ioctl parameter
 {
-	printk(KERN_ALERT "Got ioctl %d, param %lu n", ioctl_num, ioctl_param);
+	printk(KERN_ALERT "Got ioctl %d, param %lu \n", ioctl_num, ioctl_param);
 	magic++;
 
 	return 0;
